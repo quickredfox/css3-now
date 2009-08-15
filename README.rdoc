@@ -1,0 +1,42 @@
+= CSS3Now
+
+I'm sick and tired of writing CSS like this ...
+
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+
+  opacity: 0.7;
+  filter:alpha(opacity=70);
+
+It's gross.
+
+So ... I'm making a little gem for post-procssing CSS so I can write my CSS like:
+
+  border-radius: 5px;
+
+And I'll end up with:
+
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+
+I'll keep track of which browsers support what.
+
+== Installation
+
+  sudo gem install remi-css3-now --source http://gems.github.com
+
+== Usage
+
+  require 'css3-now'
+
+  CSS3Now.new("original CSS").to_css
+
+  # Reading from a file
+  CSS3Now.new( File.read('my/stylesheet.css') ).to_css
+
+  # Sinatra example
+  CSS3Now.new( sass(:stylesheet) ).to_css
