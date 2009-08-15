@@ -25,6 +25,8 @@ And I'll end up with:
 
 I'll keep track of which browsers support what.
 
+This is basically just a glorified global substitution!
+
 == Installation
 
   sudo gem install remi-css3-now --source http://gems.github.com
