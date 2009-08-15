@@ -20,6 +20,12 @@ describe CSS3Now do
                   "-khtml-border-radius: 5em 10px -3.4em #fff; border-radius: 5em 10px -3.4em #fff;\n }"
   end
 
+  it 'should grab anything before the semicolon as a value' do
+    css = CSS3Now.new("#header {\n  border-radius:( !imporant *Awesomeness* !@\#$% #123 );\n }").to_css
+    css.should == "#header {\n  -moz-border-radius:( !imporant *Awesomeness* !@\#$% #123 ); -webkit-border-radius:( !imporant *Awesomeness* !@\#$% #123 ); " + 
+                  "-khtml-border-radius:( !imporant *Awesomeness* !@\#$% #123 ); border-radius:( !imporant *Awesomeness* !@\#$% #123 );\n }"
+  end
+
   it 'should work with multiple instances of an attibute' do
     CSS3Now.new("#x {\n  opacity: 0.5;\n } #y {\n  opacity: 0.4;\n }").to_css.should == 
       "#x {\n  filter:alpha(opacity=50); opacity: 0.5;\n }" + 
@@ -40,6 +46,28 @@ describe CSS3Now do
 
   it 'should replace opacity' do
     CSS3Now.new("#x {\n  opacity: 0.5;\n }").to_css.should == "#x {\n  filter:alpha(opacity=50); opacity: 0.5;\n }"
+  end
+
+  it 'should be able to add your own substitutions' do
+    CSS3Now.new("#x { color: white; }").to_css.should == "#x { color: white; }"
+
+    lambda {
+      CSS3Now.substitution do |css|
+        CSS3Now.replace_browser_specific css, :color, [ :moz ]
+      end
+    }.should change(CSS3Now.substitutions, :count)
+
+    CSS3Now.new("#x { color: white; }").to_css.should == "#x { -moz-color: white; color: white; }"
+  end
+
+  it 'should be able to add your own substitutions (2)' do
+    CSS3Now.new("#x { foo: white; }").to_css.should == "#x { foo: white; }"
+
+    CSS3Now.substitution do |css|
+      css.gsub 'white', 'black'
+    end
+
+    CSS3Now.new("#x { foo: white; }").to_css.should == "#x { foo: black; }"
   end
 
 end
