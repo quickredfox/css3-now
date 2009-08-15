@@ -28,7 +28,7 @@ private
   end
 
   def self.replace_browser_specific css, attribute, browsers = nil
-    css.gsub /#{ attribute }: ([-\.\w ]+);/, browser_specific(attribute, '\1', browsers) 
+    css.gsub /#{ attribute }: ([-\.#\w ]+);/, browser_specific(attribute, '\1', browsers) 
   end
 
 end
